@@ -10,12 +10,12 @@ import Network.HTTP.Simple
 import System.Hclip
 
 answer :: Show a => Int -> Int -> Int -> (String -> a) -> a
-answer year day _ sol = unsafePerformIO $ do
+answer year day _ solution = unsafePerformIO $ do
     exists <- doesFileExist inputFile
     input <- if exists then readInput else downloadInput
-    let answer = sol input
-    setClipboard $ show answer
-    pure answer
+    let result = solution input
+    setClipboard $ show result
+    pure result
         where
             inputFile = show year <> "/inputs/" <> show day <> ".txt"
             readInput = C.unpack <$> C.readFile inputFile
