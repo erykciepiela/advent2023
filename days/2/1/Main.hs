@@ -1,8 +1,8 @@
 module Main (main) where
 
-import Calibration
+import DrawingGame
 
 main :: IO ()
 main = do
-    input <- readFile "days/2/input"
-    print input
+    input <- readFile "days/2/input.txt"
+    print $ sumOfPossibleGameIds input
