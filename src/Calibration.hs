@@ -30,7 +30,7 @@ extractCalibration digits = let firstDigit = head digits; lastDigit = last digit
 parseCalibration :: String -> Int
 parseCalibration line = extractCalibration $ cast $ extractDigits line
 
--- >>> solution 1 1 calibrationSum
+-- >>> solution 2023 1 1 calibrationSum
 -- 54390
 calibrationSum :: String -> Int
 calibrationSum calibrationString = (lines calibrationString <&> parseCalibration) & sum
@@ -52,7 +52,7 @@ extractDigitsAsSymbolsAndNames = parse parser ""
 parseCalibration2 :: String -> Int
 parseCalibration2 line = extractCalibration $ cast $ extractDigitsAsSymbolsAndNames line
 
--- >>> solution 1 2 calibrationSum2
+-- >>> solution 2023 1 2 calibrationSum2
 -- 54305
 calibrationSum2 :: String -> Int
 calibrationSum2 calibrationString = (lines calibrationString <&> parseCalibration2) & sum

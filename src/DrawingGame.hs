@@ -59,12 +59,12 @@ possible game = isNothing $ find exceedingDraw $ draws game
 powerOfSetOfCubes :: Game -> Int
 powerOfSetOfCubes game = draws game & foldr1 (Map.unionWith max) & product
 
--- >>> solution 2 1 sumOfPossibleGameIds
+-- >>> solution 2023 2 1 sumOfPossibleGameIds
 -- 2156
 sumOfPossibleGameIds :: String -> Int
 sumOfPossibleGameIds input = lines input <&> cast . parse gameParser "" & Prelude.filter possible <&> gid & sum
 
--- >>> solution 2 2 sumOfPowersOfSetOfCubes
+-- >>> solution 2023 2 2 sumOfPowersOfSetOfCubes
 -- 66909
 sumOfPowersOfSetOfCubes :: String -> Int
 sumOfPowersOfSetOfCubes input = lines input <&> powerOfSetOfCubes . cast . parse gameParser "" & sum

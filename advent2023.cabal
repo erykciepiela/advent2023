@@ -36,10 +36,18 @@ library
   default-extensions:
       MultiParamTypeClasses
       FlexibleInstances
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -Wmissing-export-lists
+      OverloadedStrings
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-missing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind
   build-depends:
-      base >=4.7 && <5
+      HTTP
+    , Hclip
+    , base >=4.7 && <5
+    , bytestring
     , containers
+    , directory
+    , http-client
+    , http-client-tls
+    , http-conduit
     , parsec
     , unsafe
   default-language: Haskell2010
