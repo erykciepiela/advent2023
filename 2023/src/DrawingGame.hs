@@ -54,7 +54,9 @@ gameParser = do
 possible :: Game -> Bool
 possible game = isNothing $ find exceedingDraw $ draws game
     where
-        exceedingDraw draw = 12 < fromMaybe 0 (Map.lookup Red draw) || 13 < fromMaybe 0 (Map.lookup Green draw) || 14 < fromMaybe 0 (Map.lookup Blue draw)
+        exceedingDraw draw = any (uncurry exceedingColor) [(Red, 12), (Green, 13), (Blue, 14)]
+            where
+                exceedingColor color limit = fromMaybe 0 (Map.lookup color draw) > limit
 
 -- >>> answer 2023 2 1 sumOfPossibleGameIds
 -- 2156
