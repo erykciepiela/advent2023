@@ -46,3 +46,7 @@ instance SumType (Maybe a) a where
 instance Show e => SumType (Either e a) a where
     cast (Right a) = a
     cast (Left e) = error $ "unable to cast from Left " <> show e
+
+instance SumType [a] a where
+    cast (a:_) = a
+    cast [] = error "unable to cast from []"
