@@ -25,79 +25,20 @@ library
   exposed-modules:
       Calibration
       DrawingGame
+      Utils
   other-modules:
       Paths_advent2023
   autogen-modules:
       Paths_advent2023
   hs-source-dirs:
       src
+  default-extensions:
+      MultiParamTypeClasses
+      FlexibleInstances
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind
   build-depends:
       base >=4.7 && <5
     , containers
     , parsec
-  default-language: Haskell2010
-
-executable 1-1
-  main-is: Main.hs
-  other-modules:
-      Paths_advent2023
-  autogen-modules:
-      Paths_advent2023
-  hs-source-dirs:
-      days/1/1
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      advent2023
-    , base >=4.7 && <5
-    , containers
-    , parsec
-  default-language: Haskell2010
-
-executable 1-2
-  main-is: Main.hs
-  other-modules:
-      Paths_advent2023
-  autogen-modules:
-      Paths_advent2023
-  hs-source-dirs:
-      days/1/2
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      advent2023
-    , base >=4.7 && <5
-    , containers
-    , parsec
-  default-language: Haskell2010
-
-executable 2-1
-  main-is: Main.hs
-  other-modules:
-      Paths_advent2023
-  autogen-modules:
-      Paths_advent2023
-  hs-source-dirs:
-      days/2/1
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      advent2023
-    , base >=4.7 && <5
-    , containers
-    , parsec
-  default-language: Haskell2010
-
-executable 2-2
-  main-is: Main.hs
-  other-modules:
-      Paths_advent2023
-  autogen-modules:
-      Paths_advent2023
-  hs-source-dirs:
-      days/2/2
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      advent2023
-    , base >=4.7 && <5
-    , containers
-    , parsec
+    , unsafe
   default-language: Haskell2010

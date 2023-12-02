@@ -7,6 +7,7 @@ import Text.Parsec
 import Data.Function
 import Data.Functor
 import Data.Char
+import Utils
 
 -- >>> extractDigits "ksdfj1kljsd2lks34s"
 -- Right [1,2,3,4]
@@ -30,10 +31,11 @@ extractCalibration digits = let firstDigit = head digits; lastDigit = last digit
 -- >>> parseCalibration "one2345sixseven"
 -- 25
 parseCalibration :: String -> Int
-parseCalibration line = extractCalibration $ fromRight $ extractDigits line
-    where
-        fromRight = either (error . show) id :: (Show a => Either a b -> b)
+parseCalibration line = extractCalibration $ cast $ extractDigits line
 
+-- Day 1 1
+-- >>> calibrationSum $ input 1
+-- 54390
 calibrationSum :: String -> Int
 calibrationSum calibrationString = (lines calibrationString <&> parseCalibration) & sum
 
@@ -52,11 +54,10 @@ extractDigitsAsSymbolsAndNames = parse parser ""
 -- >>> parseCalibration2 "one2345sixseven"
 -- 17
 parseCalibration2 :: String -> Int
-parseCalibration2 line = extractCalibration $ fromRight $ extractDigitsAsSymbolsAndNames line
-    where
-        fromRight = either (error . show) id :: (Show a => Either a b -> b)
+parseCalibration2 line = extractCalibration $ cast $ extractDigitsAsSymbolsAndNames line
 
+-- Day 1 2
+-- >>> calibrationSum2 $ input 1
+-- 54305
 calibrationSum2 :: String -> Int
 calibrationSum2 calibrationString = (lines calibrationString <&> parseCalibration2) & sum
-
--- (try $ string "oneight" $> [ 1, 8 ]) <|> (try $ string "threeight" $> [ 3, 8 ]) <|> (try $ string "fiveight" $> [ 5, 8 ]) <|> (try $ string "nineight" $> [ 9, 8 ]) <|> (try $ string "twone" $> [ 2, 1 ]) <|> (try $ string "sevenine" $> [ 7, 9 ]) <|> (try $ string "eightwo" $> [ 8, 2 ])
