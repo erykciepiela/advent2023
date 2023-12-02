@@ -18,7 +18,7 @@ solution year day _ sol = unsafePerformIO $ do
     setClipboard $ show answer
     pure answer
         where
-            inputFile = "inputs/" <> show day <> ".txt"
+            inputFile = show year <> "/inputs/" <> show day <> ".txt"
             readInput = C.unpack <$> C.readFile inputFile
             downloadInput :: IO String
             downloadInput = do

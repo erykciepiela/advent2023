@@ -23,16 +23,17 @@ source-repository head
 
 library
   exposed-modules:
+      Utils
       Calibration
       DrawingGame
       New
-      Utils
   other-modules:
       Paths_advent2023
   autogen-modules:
       Paths_advent2023
   hs-source-dirs:
-      src
+      utils
+      2023/src
   default-extensions:
       MultiParamTypeClasses
       FlexibleInstances

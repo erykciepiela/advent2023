@@ -50,4 +50,6 @@ ghc-options:
 - -Wno-unused-do-bind
 
 library:
-  source-dirs: src
+  source-dirs: 
+    - utils
+    - 2023/src
