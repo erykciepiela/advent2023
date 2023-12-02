@@ -9,8 +9,8 @@ import Network.HTTP.Client.TLS
 import Network.HTTP.Simple
 import System.Hclip
 
-solution :: Show a => Int -> Int -> Int -> (String -> a) -> a
-solution year day _ sol = unsafePerformIO $ do
+answer :: Show a => Int -> Int -> Int -> (String -> a) -> a
+answer year day _ sol = unsafePerformIO $ do
     exists <- doesFileExist inputFile
     input <- if exists then readInput else downloadInput
     let answer = sol input

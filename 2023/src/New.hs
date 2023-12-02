@@ -8,7 +8,7 @@ import Data.Maybe
 import Data.Function
 import Utils
 
--- >>> solution 2023 3 1 new
+-- >>> answer 2023 3 1 new
 -- 0
 new :: String -> Int
 new input = 0

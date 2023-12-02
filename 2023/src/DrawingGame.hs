@@ -56,7 +56,7 @@ possible game = isNothing $ find exceedingDraw $ draws game
     where
         exceedingDraw draw = 12 < fromMaybe 0 (Map.lookup Red draw) || 13 < fromMaybe 0 (Map.lookup Green draw) || 14 < fromMaybe 0 (Map.lookup Blue draw)
 
--- >>> solution 2023 2 1 sumOfPossibleGameIds
+-- >>> answer 2023 2 1 sumOfPossibleGameIds
 -- 2156
 sumOfPossibleGameIds :: String -> Int
 sumOfPossibleGameIds input = lines input <&> cast . parse gameParser "" & Prelude.filter possible <&> gid & sum
@@ -64,7 +64,7 @@ sumOfPossibleGameIds input = lines input <&> cast . parse gameParser "" & Prelud
 powerOfSetOfCubes :: Game -> Int
 powerOfSetOfCubes game = draws game & foldr1 (Map.unionWith max) & product
 
--- >>> solution 2023 2 2 sumOfPowersOfSetOfCubes
+-- >>> answer 2023 2 2 sumOfPowersOfSetOfCubes
 -- 66909
 sumOfPowersOfSetOfCubes :: String -> Int
 sumOfPowersOfSetOfCubes input = lines input <&> powerOfSetOfCubes . cast . parse gameParser "" & sum
