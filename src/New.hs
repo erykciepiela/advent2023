@@ -10,5 +10,5 @@ import Data.Function
 import Utils
 
 -- >>> solution 3 1 new
--- ""
-new = id
+-- 0
+new input = 0
