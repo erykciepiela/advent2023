@@ -2,8 +2,8 @@ module Utils where
 
 import System.IO.Unsafe (unsafePerformIO)
 
-input :: Int -> String
-input dayNo = unsafePerformIO $ readFile $ "inputs/" <> show dayNo <> ".txt"
+solution :: Int -> Int -> (String -> a) -> a
+solution dayNo _ sol = sol $ unsafePerformIO $ readFile $ "inputs/" <> show dayNo <> ".txt"
 
 class SumType t a where
     cast :: t -> a

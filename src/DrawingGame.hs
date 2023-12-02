@@ -1,7 +1,4 @@
-module DrawingGame 
-    ( sumOfPossibleGameIds
-    , sumOfPowersOfSetOfCubes
-    ) where
+module DrawingGame where
 
 import Text.Parsec
 import Data.Map (Map)
@@ -62,14 +59,12 @@ possible game = isNothing $ find exceedingDraw $ draws game
 powerOfSetOfCubes :: Game -> Int
 powerOfSetOfCubes game = draws game & foldr1 (Map.unionWith max) & product
 
--- Day 2 1
--- >>> sumOfPossibleGameIds $ input 2
+-- >>> solution 2 1 sumOfPossibleGameIds
 -- 2156
 sumOfPossibleGameIds :: String -> Int
 sumOfPossibleGameIds input = lines input <&> cast . parse gameParser "" & Prelude.filter possible <&> gid & sum
 
--- Day 2 2
--- >>> sumOfPowersOfSetOfCubes $ input 2
+-- >>> solution 2 2 sumOfPowersOfSetOfCubes
 -- 66909
 sumOfPowersOfSetOfCubes :: String -> Int
 sumOfPowersOfSetOfCubes input = lines input <&> powerOfSetOfCubes . cast . parse gameParser "" & sum

@@ -25,6 +25,7 @@ library
   exposed-modules:
       Calibration
       DrawingGame
+      New
       Utils
   other-modules:
       Paths_advent2023
@@ -35,7 +36,7 @@ library
   default-extensions:
       MultiParamTypeClasses
       FlexibleInstances
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind -Wmissing-export-lists
   build-depends:
       base >=4.7 && <5
     , containers

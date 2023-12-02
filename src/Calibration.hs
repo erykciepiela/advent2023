@@ -1,7 +1,4 @@
-module Calibration
-    ( calibrationSum
-    , calibrationSum2
-    ) where
+module Calibration where
 
 import Text.Parsec
 import Data.Function
@@ -33,8 +30,7 @@ extractCalibration digits = let firstDigit = head digits; lastDigit = last digit
 parseCalibration :: String -> Int
 parseCalibration line = extractCalibration $ cast $ extractDigits line
 
--- Day 1 1
--- >>> calibrationSum $ input 1
+-- >>> solution 1 1 calibrationSum
 -- 54390
 calibrationSum :: String -> Int
 calibrationSum calibrationString = (lines calibrationString <&> parseCalibration) & sum
@@ -56,8 +52,7 @@ extractDigitsAsSymbolsAndNames = parse parser ""
 parseCalibration2 :: String -> Int
 parseCalibration2 line = extractCalibration $ cast $ extractDigitsAsSymbolsAndNames line
 
--- Day 1 2
--- >>> calibrationSum2 $ input 1
+-- >>> solution 1 2 calibrationSum2
 -- 54305
 calibrationSum2 :: String -> Int
 calibrationSum2 calibrationString = (lines calibrationString <&> parseCalibration2) & sum
