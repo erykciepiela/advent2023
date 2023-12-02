@@ -33,7 +33,7 @@ ghc-options:
 - -Wmissing-home-modules
 - -Wpartial-fields
 - -Wredundant-constraints
-
+- -Wno-unused-do-bind
 library:
   source-dirs: src
 

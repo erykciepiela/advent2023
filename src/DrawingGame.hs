@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-unused-do-bind #-}
-
 module DrawingGame 
     ( sumOfPossibleGameIds
     , sumOfPowersOfSetOfCubes
