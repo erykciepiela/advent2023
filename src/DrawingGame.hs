@@ -5,11 +5,11 @@ module DrawingGame
 
 import Text.Parsec
 import Data.Map (Map)
-import Data.Functor ( ($>), (<&>) )
+import Data.Functor
 import qualified Data.Map as Map
 import Data.Foldable (find)
-import Data.Maybe (isNothing, fromMaybe)
-import Data.Function ((&))
+import Data.Maybe
+import Data.Function
 
 data Game = Game
     { gid :: Int
