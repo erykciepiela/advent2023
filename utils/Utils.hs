@@ -14,7 +14,6 @@ solution year day _ sol = unsafePerformIO $ do
     exists <- doesFileExist inputFile
     input <- if exists then readInput else downloadInput
     let answer = sol input
-    C.putStrLn "Answer in clipboad"
     setClipboard $ show answer
     pure answer
         where
