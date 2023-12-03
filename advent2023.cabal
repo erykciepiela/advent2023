@@ -27,6 +27,7 @@ library
       Calibration
       DrawingGame
       Gondola
+      New
   other-modules:
       Paths_advent2023
   autogen-modules:
