@@ -15,7 +15,7 @@ import qualified Data.Set as Set
 
 -- >>> answer 2023 3 1 sumOfAllPartNumbers
 -- 531932
-sumOfAllPartNumbers input = sum $ labels input & Set.map number
+sumOfAllPartNumbers input = labels input & Set.toList <&> number & sum
 
 partMap :: String -> Map.Map (Int, Int) Part
 partMap input = parts input <&> (\p@(Part ch y x) -> ((y, x), p)) & Map.fromList
