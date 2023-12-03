@@ -38,6 +38,8 @@ library
       MultiParamTypeClasses
       FlexibleInstances
       OverloadedStrings
+      OverloadedRecordDot
+      DuplicateRecordFields
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-missing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind
   build-depends:
       HTTP
