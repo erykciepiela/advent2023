@@ -13,7 +13,7 @@ import Control.Monad (join, replicateM)
 import Data.Set (Set)
 import qualified Data.Set as Set
 
--- >>> answer 2023 4 1 foo
+-- >>> answer 2023 4 1 pileOfCardsWorth
 -- 21105
 pileOfCardsWorth input = sum $ cardWorth <$> lines input
 
