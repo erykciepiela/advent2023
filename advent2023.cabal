@@ -27,6 +27,7 @@ library
       Calibration
       DrawingGame
       Gondola
+      New
       Scratchpads
   other-modules:
       Paths_advent2023
