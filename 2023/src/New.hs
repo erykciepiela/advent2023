@@ -1,4 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase #-}
 module New where
 
 import Text.Parsec
@@ -8,14 +10,16 @@ import Data.Foldable
 import Data.Maybe
 import Data.Function
 import Utils
-import Data.Sequence (mapWithIndex, fromList)
+import Data.Sequence (mapWithIndex, fromList, sort)
 import Control.Monad (join, replicateM)
 import Data.Set (Set)
 import qualified Data.Set as Set
 
 -- >>> answer 2023 4 1 pileOfCardsWorth
 -- 21105
-pileOfCardsWorth input = sum $ cardWorth <$> lines input
+pileOfCardsWorth input = sum $ (\case
+    0 -> 0
+    n -> 2 ^ (n - 1)). cardWorth <$> lines input
 
 cardWorth :: String -> Int
 cardWorth card = cast $ parse cardParser "" card
@@ -33,19 +37,15 @@ cardParser = do
     (numbersIHave :: [Int]) <- replicateM 25 $ do
         many (char ' ')
         read <$> many1 digit
-    let matchingNumbers = Set.size $ Set.intersection (Set.fromList winningNumbers) (Set.fromList numbersIHave)
-    pure $ case matchingNumbers of
-        0 -> 0
-        n -> 2 ^ (n - 1)
+    pure $ Set.size $ Set.intersection (Set.fromList winningNumbers) (Set.fromList numbersIHave)
+    
+-- >>> answer 2023 4 2 totalScratchpadNumber
+-- 5329815
+totalScratchpadNumber input =
+    let cardWorths = Map.fromAscList $ toList $ mapWithIndex (\i card -> (i + 1, (+) (i + 1) <$> [1..cardWorth card])) (fromList $ lines input)
+    in length $ Map.keys cardWorths >>= closure cardWorths
 
-
-
-
-
-
-
-
-
-
--- >>> answer 2023 4 2 foo
-bar input = 0
+-- >>> closure (Map.fromList [(1, [2]), (2, [])]) 1
+-- [1,2]
+closure :: Ord v => Map.Map v [v] -> v -> [v]
+closure map key = key : (cast (Map.lookup key map) >>= closure map)
