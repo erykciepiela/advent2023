@@ -1,7 +1,4 @@
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE LambdaCase #-}
-module New where
+module Scratchpads where
 
 import Text.Parsec
 import Data.Functor
