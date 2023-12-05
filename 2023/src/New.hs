@@ -17,10 +17,8 @@ import Control.Arrow
 -- 462648396
 new1 input = let 
     Right (seeds, maps) = parse inputParser "" input
-
     mapsFunction = foldl1 (>>>) (mapFunction <$> maps)  
     in minimum $ mapsFunction <$> seeds
-    -- in 1
 
 mapFunction :: [(Int, Int, Int)] -> Int -> Int
 mapFunction map x = fromMaybe x $ mapMaybe (\(dstStart, srcStart, range) -> if x >= srcStart && x < srcStart + range then Just (dstStart + x - srcStart) else Nothing) map & listToMaybe
