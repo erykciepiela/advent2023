@@ -36,7 +36,7 @@ answer year day _ solution = unsafePerformIO $ do
                         response <- httpBS request
                         return $ C.unpack $ getResponseBody response
 
-class SumType t a where
+class SumType t a | t -> a where
     cast :: t -> a
 
 instance SumType (Maybe a) a where

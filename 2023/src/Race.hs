@@ -18,7 +18,7 @@ import Data.List (groupBy, sortOn, singleton)
 -- 1083852
 productOfWinningPushes input =
     let
-        (Right records) = parse recordParser "" input
+        records = cast $ parse recordParser "" input
             where
                 recordParser :: Parsec String u [Record]
                 recordParser = do
@@ -39,7 +39,7 @@ data Record = Record { t :: Int, s :: Int } deriving Show
 -- 23501589
 productOfWinningPushesWithCorrectedNote input =
     let
-        (Right record) = parse recordParser "" input
+        record = cast $ parse recordParser "" input
             where
                 recordParser :: Parsec String u Record
                 recordParser = do
