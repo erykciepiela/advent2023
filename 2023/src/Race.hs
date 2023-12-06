@@ -34,3 +34,19 @@ numberOfWinningPushes :: Record -> Int
 numberOfWinningPushes record = length [ p | p <- [1..(record.t - 1)], p * (record.t - p) > record.s ]
 
 data Record = Record { t :: Int, s :: Int } deriving Show
+
+-- >>> answer 2023 6 2 productOfWinningPushesWithCorrectedNote
+-- 23501589
+productOfWinningPushesWithCorrectedNote input =
+    let
+        (Right record) = parse recordsParser "" input
+            where
+                recordsParser :: Parsec String u Record
+                recordsParser = do
+                    string "Time:"
+                    time <- read . join <$> many (many (char ' ') *> many1 digit)
+                    string "\nDistance:"
+                    distance <- read . join <$> many (many (char ' ') *> many1 digit)
+                    string "\n"
+                    pure $ Record time distance
+    in numberOfWinningPushes record
