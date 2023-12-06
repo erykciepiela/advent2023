@@ -18,10 +18,10 @@ import Data.List (groupBy, sortOn, singleton)
 -- 1083852
 productOfWinningPushes input =
     let
-        (Right records) = parse recordsParser "" input
+        (Right records) = parse recordParser "" input
             where
-                recordsParser :: Parsec String u [Record]
-                recordsParser = do
+                recordParser :: Parsec String u [Record]
+                recordParser = do
                     string "Time:"
                     times <- many $ many (char ' ') *> (read <$> many1 digit)
                     string "\nDistance:"
@@ -39,10 +39,10 @@ data Record = Record { t :: Int, s :: Int } deriving Show
 -- 23501589
 productOfWinningPushesWithCorrectedNote input =
     let
-        (Right record) = parse recordsParser "" input
+        (Right record) = parse recordParser "" input
             where
-                recordsParser :: Parsec String u Record
-                recordsParser = do
+                recordParser :: Parsec String u Record
+                recordParser = do
                     string "Time:"
                     time <- read . join <$> many (many (char ' ') *> many1 digit)
                     string "\nDistance:"
