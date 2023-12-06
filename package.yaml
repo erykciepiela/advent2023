@@ -28,6 +28,7 @@ default-extensions:
 - FlexibleContexts
 - LambdaCase
 - FunctionalDependencies
+- TypeApplications
 
 dependencies:
 - base >= 4.7 && < 5

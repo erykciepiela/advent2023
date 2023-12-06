@@ -28,6 +28,7 @@ library
       DrawingGame
       Garden
       Gondola
+      New
       Race
       Scratchpads
   other-modules:
@@ -47,6 +48,7 @@ library
       FlexibleContexts
       LambdaCase
       FunctionalDependencies
+      TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-missing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-unused-do-bind
   build-depends:
       HTTP

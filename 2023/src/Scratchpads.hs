@@ -1,15 +1,11 @@
 module Scratchpads where
 
 import Text.Parsec
-import Data.Functor
 import qualified Data.Map as Map
 import Data.Foldable
-import Data.Maybe
-import Data.Function
 import Utils
-import Data.Sequence (mapWithIndex, fromList, sort)
-import Control.Monad (join, replicateM)
-import Data.Set (Set)
+import Data.Sequence (mapWithIndex, fromList)
+import Control.Monad (replicateM)
 import qualified Data.Set as Set
 
 -- >>> answer 2023 4 1 pileOfCardsWorth

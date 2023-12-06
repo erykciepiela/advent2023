@@ -8,6 +8,7 @@ import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import Network.HTTP.Simple
 import System.Hclip
+import Text.Parsec
 
 answer :: Show a => Int -> Int -> Int -> (String -> a) -> a
 answer year day _ solution = unsafePerformIO $ do
@@ -50,3 +51,12 @@ instance Show e => SumType (Either e a) a where
 instance SumType [a] a where
     cast (a:_) = a
     cast [] = error "unable to cast from []"
+
+
+
+-- >>> parsed "123" (read @Int <$> many1 digit)
+-- 123
+-- >>> "123" `parsed` (read @Int <$> many1 digit)
+-- 123
+parsed :: String -> Parsec String () a -> a
+parsed input parser = cast $ parse parser "" input

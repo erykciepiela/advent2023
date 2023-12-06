@@ -2,22 +2,16 @@ module Garden where
 
 import Text.Parsec
 import Data.Functor
-import qualified Data.Map as Map
-import Data.Foldable
 import Data.Maybe
 import Data.Function
-import Utils
-import Data.Sequence (mapWithIndex, fromList, sort)
-import Control.Monad (join, replicateM)
-import Data.Set (Set)
-import qualified Data.Set as Set
 import Control.Arrow
-import Data.List (groupBy, sortOn, singleton)
+import Data.List (groupBy, sortOn)
+import Utils (parsed)
 
 -- >>> answer 2023 5 1 new1
 -- 462648396
 new1 input = let
-    Right (seeds, maps) = parse inputParser "" input
+    (seeds, maps) = input `parsed` inputParser
     mapsFunction = foldl1 (>>>) (mapFunction <$> maps)
     in minimum $ mapsFunction <$> seeds
 
@@ -96,7 +90,7 @@ headerParser = do
 -- Just (Rule {dstStart = 498892555, srcStart = -8913571, range = 3499363779})
 -- Just (Rule {dstStart = 342640189, srcStart = -97088269, range = 2084965803})
 new2 input = let
-    Right (seedRanges, ruleSets) = parse inputParserWithSeedRanges "" input
+    (seedRanges, ruleSets) = input `parsed` inputParserWithSeedRanges
     seedRuleSet = sortOn dstStart (seedRanges <&> (\(start, range) -> Rule start (- range - 1) range))
     ruleSet = sortOn dstStart $ mergeRules (foldr1 mergeRules ruleSets) seedRuleSet
     -- ruleSet = foldr1 mergeRules ruleSets
