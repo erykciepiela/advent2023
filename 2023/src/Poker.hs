@@ -1,19 +1,11 @@
 module Poker where
 
 import Text.Parsec
-import Data.Functor
-import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Foldable
-import Data.Maybe
 import Data.Function
 import Utils
 -- import Data.Sequence
 import Control.Monad
-import Data.Set (Set)
-import qualified Data.Set as Set
-import Control.Arrow
-import Data.List
+import Data.List ( group, sortBy, sortOn )
 import Data.Ord (Down(Down))
 import Data.Sequence (mapWithIndex, fromList)
 
@@ -26,30 +18,21 @@ totalWinnings input =
                 char ' '
                 bid <- read <$> many1 digit
                 pure $ Hand cards bid
-    in sum $ mapWithIndex (\index hand -> winning (index + 1) hand.bid) $ fromList $ sortHands hands
+    in sum $ mapWithIndex (\index hand -> winning (index + 1) hand.bid) $ fromList $ sortHands type' cardValue hands
 
 data Hand = Hand
     { cards :: String
     , bid :: Int
     } deriving (Show, Eq)
 
-sortHands :: [Hand] -> [Hand]
-sortHands = sortOn (Down . type' . cards) . sortBy (on compareCards cards)
-
--- >>> sortCards ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
--- ["32T3K","KTJJT","KK677","T55J5","QQQJA"]
-sortCards :: [String] -> [String]
-sortCards hands = sortOn (Down . type') $ sortBy compareCards hands
+sortHands :: (String -> Int) -> (Char -> Int) -> [Hand] -> [Hand]
+sortHands typeValue cardValue = sortOn (Down . typeValue . cards) . sortBy (on (compareCards cardValue) cards)
 
 winning :: Int -> Int -> Int
 winning rank bid = rank * bid
 
--- >>> rank ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
--- rank :: Int -> String -> Int
--- rank otherCards cards = cast (elemIndex cards otherCards) + 1
-
 -- >>> type' <$> ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
--- [2,4,3,3,4]
+-- [5,3,4,4,3]
 type' :: String -> Int
 type' cards =
     let
@@ -65,12 +48,57 @@ type' cards =
         [2, 1, 1, 1] -> 5
         _ -> 6
 
--- >>> compareCards "33332" "33AAA"
+-- >>> typeWithJoker <$> ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
+-- [5,1,4,1,1]
+-- >>> typeWithJoker "KTJJT"
+-- 1
+typeWithJoker :: String -> Int
+typeWithJoker cards =
+    let
+        sortedCards = sortOn cardValue cards
+        groupedCards = sortOn (Down . length) $ group sortedCards
+        countedCards = length <$> groupedCards
+    in case countedCards of
+        [5] -> 0
+        [4, 1]
+            | head (groupedCards !! 0) == 'J' -> 0
+            | head (groupedCards !! 1) == 'J' -> 0
+            | otherwise -> 1
+        [3, 2] 
+            | head (groupedCards !! 0) == 'J' -> 0
+            | head (groupedCards !! 1) == 'J' -> 0
+            | otherwise -> 2
+        [3, 1, 1] 
+            | head (groupedCards !! 0) == 'J' -> 1
+            | head (groupedCards !! 1) == 'J' -> 1
+            | head (groupedCards !! 2) == 'J' -> 1
+            | otherwise -> 3
+        [2, 2, 1]
+            | head (groupedCards !! 0) == 'J' -> 1
+            | head (groupedCards !! 1) == 'J' -> 1
+            | head (groupedCards !! 2) == 'J' -> 2
+            | otherwise -> 4
+        [2, 1, 1, 1]
+            | head (groupedCards !! 0) == 'J' -> 3
+            | head (groupedCards !! 1) == 'J' -> 3
+            | head (groupedCards !! 2) == 'J' -> 3
+            | head (groupedCards !! 3) == 'J' -> 3
+            | otherwise -> 5
+        [1, 1, 1, 1, 1]
+            | head (groupedCards !! 0) == 'J' -> 5
+            | head (groupedCards !! 1) == 'J' -> 5
+            | head (groupedCards !! 2) == 'J' -> 5
+            | head (groupedCards !! 3) == 'J' -> 5
+            | head (groupedCards !! 4) == 'J' -> 5
+            | otherwise -> 6
+        _ -> error $ "invalid cards: " <> cards
+
+-- >>> compareCards cardValue "33332" "33AAA"
 -- LT
-compareCards :: String -> String -> Ordering
-compareCards [] [] = LT
-compareCards cards1 cards2 = case compare (cardValue (head cards1)) (cardValue (head cards2)) of
-    EQ -> compareCards (tail cards1) (tail cards2)
+compareCards :: (Char -> Int) -> String -> String -> Ordering
+compareCards _ [] [] = LT
+compareCards cardValue cards1 cards2 = case compare (cardValue (head cards1)) (cardValue (head cards2)) of
+    EQ -> compareCards cardValue (tail cards1) (tail cards2)
     o -> o
 
 cardValue :: Char -> Int
@@ -90,8 +118,20 @@ cardValue = \case
     '2' -> 1
     ch -> error $ "invalid card: " <> show ch
 
+cardValueWithJoker :: Char -> Int
+cardValueWithJoker = \case
+    'J' -> 0
+    o -> cardValue o
 
--- >>> answer 2023 7 2 new2
--- 1
-new2 input = 1
+-- >>> answer 2023 7 2 totalWinningsWithJokers
+-- 252898370
+totalWinningsWithJokers input =
+    let hands = input `parsed` do
+            flip sepEndBy (char '\n') $ do
+                cards <- replicateM 5 anyChar
+                char ' '
+                bid <- read <$> many1 digit
+                pure $ Hand cards bid
+    in sum $ mapWithIndex (\index hand -> winning (index + 1) hand.bid) $ fromList $ sortHands typeWithJoker cardValueWithJoker hands
+
 
