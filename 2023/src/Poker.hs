@@ -15,9 +15,10 @@ import qualified Data.Set as Set
 import Control.Arrow
 import Data.List
 import Data.Ord (Down(Down))
+import Data.Sequence (mapWithIndex, fromList)
 
 -- >>> answer 2023 7 1 totalWinnings
--- 252039365
+-- 252052080
 totalWinnings input =
     let hands = input `parsed` do
             flip sepEndBy (char '\n') $ do
@@ -25,33 +26,56 @@ totalWinnings input =
                 char ' '
                 bid <- read <$> many1 digit
                 pure $ Hand cards bid
-    in sum $ winning hands <$> hands
+    in sum $ mapWithIndex (\index hand -> winning (index + 1) hand.bid) $ fromList $ sortHands hands
 
 data Hand = Hand
     { cards :: String
     , bid :: Int
     } deriving (Show, Eq)
 
-winning :: [Hand] -> Hand -> Int
-winning hands hand = hand.bid * rank (sortOn (Down . type') $ sortBy compareCards $ cards <$> hands) hand.cards
+sortHands :: [Hand] -> [Hand]
+sortHands = sortOn (Down . type' . cards) . sortBy (on compareCards cards)
 
-rank :: [String] -> String -> Int
-rank otherCards cards = cast (elemIndex cards otherCards) + 1
+-- >>> sortCards ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
+-- ["32T3K","KTJJT","KK677","T55J5","QQQJA"]
+sortCards :: [String] -> [String]
+sortCards hands = sortOn (Down . type') $ sortBy compareCards hands
 
+winning :: Int -> Int -> Int
+winning rank bid = rank * bid
+
+-- >>> rank ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
+-- rank :: Int -> String -> Int
+-- rank otherCards cards = cast (elemIndex cards otherCards) + 1
+
+-- >>> type' <$> ["32T3K","T55J5","KK677","KTJJT","QQQJA"]
+-- [2,4,3,3,4]
 type' :: String -> Int
-type' cards = 1
+type' cards =
+    let
+        sortedCards = sortOn cardValue cards
+        groupedCards = group sortedCards
+        countedCards = sortOn Down $ length <$> groupedCards
+    in case countedCards of
+        [5] -> 0
+        [4, 1] -> 1
+        [3, 2] -> 2
+        [3, 1, 1] -> 3
+        [2, 2, 1] -> 4
+        [2, 1, 1, 1] -> 5
+        _ -> 6
 
 -- >>> compareCards "33332" "33AAA"
 -- LT
 compareCards :: String -> String -> Ordering
-compareCards [] [] = error "no cards to compare"
+compareCards [] [] = LT
 compareCards cards1 cards2 = case compare (cardValue (head cards1)) (cardValue (head cards2)) of
     EQ -> compareCards (tail cards1) (tail cards2)
     o -> o
 
 cardValue :: Char -> Int
 cardValue = \case
-    'A' -> 12
+    'A' -> 13
     'K' -> 12
     'Q' -> 11
     'J' -> 10
