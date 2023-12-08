@@ -32,6 +32,7 @@ library
       Poker
       Race
       Scratchpads
+      Wasteland
   other-modules:
       Paths_advent2023
   autogen-modules:
