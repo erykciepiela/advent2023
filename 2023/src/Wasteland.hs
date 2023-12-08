@@ -48,7 +48,7 @@ stepsRequiredInParallel input = foldr1 lcm stepNumbers
                 toRight <- replicateM 3 letter
                 string ")"
                 pure (from, (toLeft, toRight))
-            pure (\position -> let lookup = cast $ Map.lookup position (Map.fromList nextPositions) in \case
-                R -> snd lookup
-                L -> fst lookup, steps, (fst <$> nextPositions) & filter ("A" `isSuffixOf`))
+            pure (\position -> let found = cast $ Map.lookup position (Map.fromList nextPositions) in \case
+                R -> snd found
+                L -> fst found, steps, (fst <$> nextPositions) & filter ("A" `isSuffixOf`))
 
