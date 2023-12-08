@@ -2,16 +2,10 @@ module Wasteland where
 
 import Text.Parsec
 import Data.Functor
-import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Foldable
-import Data.Maybe
 import Data.Function
 import Utils
--- import Data.Sequence
 import Control.Monad
-import Data.Set (Set)
-import qualified Data.Set as Set
 import Control.Arrow
 import Data.List
 
@@ -37,7 +31,24 @@ stepsRequired input = findIndex (== "ZZZ") positions
 
 data Step = L | R deriving (Read)
 
--- >>> answer 2023 8 2 new2
--- 1
-new2 input = 1
+-- >>> answer 2023 8 2 stepsRequiredInParallel
+-- 10921547990923
+stepsRequiredInParallel input = foldr1 lcm stepNumbers
+    where
+        stepNumbers = initialPositions <&> \initialPosition -> cast $ findIndex ("Z" `isSuffixOf`) (positions initialPosition)
+        positions initialPosition = scanl nextPosition initialPosition (cycle steps)
+        (nextPosition, steps, initialPositions) = input `parsed` do
+            steps <- many1 ((read @Step <<< singleton) <$> letter)
+            string "\n\n"
+            nextPositions <- flip sepEndBy (char '\n') $ do
+                from <- replicateM 3 letter
+                string  " = ("
+                toLeft <- replicateM 3 letter
+                string ", "
+                toRight <- replicateM 3 letter
+                string ")"
+                pure (from, (toLeft, toRight))
+            pure (\position -> let lookup = cast $ Map.lookup position (Map.fromList nextPositions) in \case
+                R -> snd lookup
+                L -> fst lookup, steps, (fst <$> nextPositions) & filter ("A" `isSuffixOf`))
 
