@@ -1,20 +1,8 @@
 module PipeMaze where
 
 import Prelude hiding (Bounded)
-import Text.Parsec
-import Data.Functor
-import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Foldable
-import Data.Maybe
-import Data.Function
 import Utils
 -- import Data.Sequence
-import Control.Monad
-import Data.Set (Set)
-import qualified Data.Set as Set
--- import Control.Arrow
-import Data.List
 
 data Dir = N | W | S | E deriving (Show, Eq, Ord)
 
@@ -50,7 +38,9 @@ parseBoard input = mapWithIndex (lines input) $ \y row -> mapWithIndex row $ \x 
         W -> Just ((y+1, x), S)
         dir -> error ("!" <> show y <> ":" <> show x <> " " <> show cell <> " " <> show dir)
     cell -> \dir -> error ("!" <> show y <> ":" <> show x <> " " <> show cell <> " " <> show dir)
-
+    where  
+        mapWithIndex :: [a] -> (Int -> a -> b) -> [b]
+        mapWithIndex as f = zipWith f [0..] as
 
 -- >>> loopLength (parseBoard ".....\n.S-7.\n.|.|.\n.L-J.\n.....") ((1,2), E)
 -- 8
@@ -77,9 +67,6 @@ goLoop board ((y, x), dir) = case (board !! y !! x) dir of
     Nothing -> []
     Just new@(_, _) -> (y, x): goLoop board new
 
-
-type Bounded = ((Int, Int), Dir) -> Bool
-
 -- >>> area $ loop (parseBoard ".....\n.S-7.\n.|.|.\n.L-J.\n.....") ((1,2), E)
 -- >>> area $ loop (parseBoard ".....\n.S-7.\n.|.|.\n.L-J.\n.....") ((2,1), S)
 -- >>> area $ loop (parseBoard "...........\n.S-------7.\n.|F-----7|.\n.||OOOOO||.\n.||OOOOO||.\n.|L-7OF-J|.\n.|II|O|II|.\n.L--JOL--J.\n.....O.....") ((1,2), E)
@@ -88,55 +75,14 @@ type Bounded = ((Int, Int), Dir) -> Bool
 -- >>> area $ loop (parseBoard "FF7FSF7F7F7F7F7F---7\nL|LJ||||||||||||F--J\nFL-7LJLJ||||||LJL-77\nF--JF--7||LJLJIF7FJ-\nL---JF-JLJIIIIFJLJJ7\n|F|F-JF---7IIIL7L|7|\n|FFJF7L7F-JF7IIL---7\n7-L-JL7||F7|L7F-7F7|\nL.L7LFJ|||||FJL7||LJ\nL7JLJL-JLJLJL--JLJ.L") ((1, 4), S)
 -- 1
 -- 1
--- 3
--- 3
--- 0
--- 0
+-- 4
+-- 4
+-- 8
+-- 10
 area :: [(Int, Int)] -> Int
-area loop = let
-    bounded = goArea (diff loop) (const False)
-    (miny, maxy) = (minimum $ fst <$> loop, maximum $ fst <$> loop)
-    (minx, maxx) = (minimum $ snd <$> loop, maximum $ snd <$> loop)
-    in length [(y, x) | y <- [miny..maxy], x <- [minx..maxx], (y, x) `notElem` loop && bounded ((y,x), N) && bounded ((y,x), S) && bounded ((y,x), E) && bounded ((y,x), W)]
--- >>> diff [1, 2, 3]
--- [(1,2,3),(2,3,1),(3,1,2)]
-diff :: [a] -> [(a, a, a)]
-diff as = let
-    bs = tail (cycle as)
-    cs = tail (cycle bs)
-    in zip3 as bs cs
+area loop = abs (sum (zipWith (\(x1, y1) (x2, y2) -> x1 * y2 - x2 * y1) loop (tail loop <> [head loop]))) `div` 2 - (length loop - 1) `div` 2 -- shoelace formula
 
-goArea :: [((Int, Int), (Int, Int), (Int, Int))] -> Bounded -> Bounded
-goArea [] b = b
-goArea (((py, px),(y, x), (ny, nx)):rest) bounded
-    -- -- N<->S
-    -- | px == nx = goArea rest $ \case
-    --     q@((y', x'), E) | (y' == y && x' < x) -> not (bounded q)
-    --     q@((y', x'), W) | (y' == y && x' > x) -> not (bounded q)
-    --     q -> bounded q
-    -- -- E<->W
-    -- | py == ny = goArea rest $ \case
-    --     q@((y', x'), S) | (y' < y && x' == x) -> not (bounded q)
-    --     q@((y', x'), N) | (y' > y && x' == x) -> not (bounded q)
-    --     q -> bounded q
-    | otherwise = goArea rest $ \case
-        q@((y', x'), S) | (y' < y && x' == x && nx /= x && py >= y) -> not (bounded q)
-        q@((y', x'), N) | (y' > y && x' == x && nx /= x && py <= y) -> not (bounded q)
-        q@((y', x'), E) | (y' == y && x' < x && ny /= y && px >= x) -> not (bounded q)
-        q@((y', x'), W) | (y' == y && x' > x && ny /= y && px <= x) -> not (bounded q)
-        q -> bounded q
-    -- N<->E
-    -- | (ny - py) == (nx - px) = goArea rest $ \case
-    --     q@((y', x'), S) | (y' < y && x' == x) -> not (bounded q)
-    -- E<->S
-    -- S<->W
-    -- W<->N
-
-
-mapWithIndex :: [a] -> (Int -> a -> b) -> [b]
-mapWithIndex as f = zipWith f [0..] as
-
--- >>> answer 2023 10 2 mainLoopField
--- ProgressCancelledException
-mainLoopField input = area $ loop (parseBoard input) ((96, 102), E)
+-- >>> answer 2023 10 2 mainLoopArea
+-- 453
+mainLoopArea input = area $ loop (parseBoard input) ((96, 102), E)
 
