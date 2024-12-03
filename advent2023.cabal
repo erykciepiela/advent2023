@@ -36,6 +36,7 @@ library
       Scratchpads
       Wasteland
       HistorianHysteria
+      RedNosedReports
   other-modules:
       Paths_advent2023
   autogen-modules:
