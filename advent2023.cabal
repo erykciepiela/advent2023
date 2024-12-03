@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.36.0.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -35,6 +35,7 @@ library
       Race
       Scratchpads
       Wasteland
+      HistorianHysteria
   other-modules:
       Paths_advent2023
   autogen-modules:
@@ -42,6 +43,7 @@ library
   hs-source-dirs:
       utils
       2023/src
+      2024/src
   default-extensions:
       MultiParamTypeClasses
       FlexibleInstances
