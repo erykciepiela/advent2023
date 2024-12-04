@@ -35,6 +35,7 @@ library
       Race
       Scratchpads
       Wasteland
+      CeresSearch
       HistorianHysteria
       MullItOver
       RedNosedReports
@@ -63,6 +64,7 @@ library
     , Hclip
     , base >=4.7 && <5
     , bytestring
+    , comonad
     , containers
     , directory
     , http-client
