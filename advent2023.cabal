@@ -36,6 +36,7 @@ library
       Scratchpads
       Wasteland
       HistorianHysteria
+      MullItOver
       RedNosedReports
   other-modules:
       Paths_advent2023
